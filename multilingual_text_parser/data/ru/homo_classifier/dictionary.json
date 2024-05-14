@@ -1,0 +1,138 @@
+{
+    "гор(?:ю|я)": {
+        "classifier": "212478.bin",
+        "threshold": 0.8,
+        "homographs": [
+            "2",
+            "1"
+        ]
+    },
+    "мо(?:ю|я)": {
+        "classifier": "e20473.bin",
+        "threshold": 0.8,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "уж(?:е)": {
+        "classifier": "bc00fe.bin",
+        "threshold": 0.8,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "пот(?:ом)": {
+        "classifier": "12e6c8.bin",
+        "threshold": 0.5,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "волос": {
+        "classifier": "50d0bf.bin",
+        "threshold": 0.7601764798164368,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "дела": {
+        "classifier": "aa4a03.bin",
+        "threshold": 0.5098176002502441,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "сам(?:ой|ом)": {
+        "classifier": "56f5c9.bin",
+        "threshold": 0.12313099205493927,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "сам(?:ого|ому)": {
+        "classifier": "56f5c9.bin",
+        "threshold": 0.12313099205493927,
+        "homographs": [
+            "1",
+            "3"
+        ]
+    },
+    "мал(?:о|ы)": {
+        "classifier": "48f88f.bin",
+        "threshold": 0.1783551573753357,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "ворот(?:|а|ам|ами|ах)": {
+        "classifier": "294b3d.bin",
+        "threshold": 0.8345648050308228,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "мук(?:а|е|и|ой|ою|у)": {
+        "classifier": "cc2eed.bin",
+        "threshold": 0.36549049615859985,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "зам(?:ка|кам|ками|ках|ке|ки|ком|ку|ок)": {
+        "classifier": "bf9444.bin",
+        "threshold": 0.6512529850006104,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "сто(?:им|ит|ите|ишь|ю|ят|ящая|ящего|ящее|ящей|ящем|ящему|ящею|ящие|ящий|ящим|ящими|ящих|ящую)": {
+        "classifier": "a7eb8d.bin",
+        "threshold": 0.7946780323982239,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "ворон(?:|а|ам|ами|ах|е|у|ы)": {
+        "classifier": "a550cc.bin",
+        "threshold": 0.39324894547462463,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "пар(?:ам|ами|ах|ом|у|ы)": {
+        "classifier": "e937a1.bin",
+        "threshold": 0.3409114181995392,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    },
+    "дорог(?:а|ой|ою)": {
+        "classifier": "ee5d48.bin",
+        "threshold": 0.5373674035072327,
+        "homographs": [
+            "2",
+            "3"
+        ]
+    },
+    "дорог(?:|и)": {
+        "classifier": "f79189.bin",
+        "threshold": 0.20418095588684082,
+        "homographs": [
+            "1",
+            "2"
+        ]
+    }
+}

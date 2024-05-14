@@ -1,0 +1,166 @@
+{
+    "axes": {
+        "axes_nou": [
+            "AE1",
+            "K",
+            "S",
+            "IY0",
+            "Z"
+        ],
+        "axes_nou-vrb": [
+            "AE1",
+            "K",
+            "S",
+            "IH0",
+            "Z"
+        ]
+    },
+    "bow": {
+        "bow_nou-knot": [
+            "B",
+            "OW1"
+        ],
+        "bow_nou-ship": [
+            "B",
+            "AW1"
+        ]
+    },
+    "celtic": {
+        "celtic_adj-nou-sports": [
+            "S",
+            "EH1",
+            "L",
+            "T",
+            "IH0",
+            "K"
+        ],
+        "celtic": [
+            "K",
+            "EH1",
+            "L",
+            "T",
+            "IH0",
+            "K"
+        ]
+    },
+    "lead": {
+        "lead_nou": [
+            "L",
+            "EH1",
+            "D"
+        ],
+        "lead_nou-vrb": [
+            "L",
+            "IY1",
+            "D"
+        ]
+    },
+    "live": {
+        "live_adj": [
+            "L",
+            "AY1",
+            "V"
+        ],
+        "live_vrb": [
+            "L",
+            "IH1",
+            "V"
+        ]
+    },
+    "lives": {
+        "lives_nou": [
+            "L",
+            "AY1",
+            "V",
+            "Z"
+        ],
+        "lives_vrb": [
+            "L",
+            "IH1",
+            "V",
+            "Z"
+        ]
+    },
+    "postulate": {
+        "postulate_nou": [
+            "P",
+            "AA1",
+            "S",
+            "CH",
+            "AH0",
+            "L",
+            "AH0",
+            "T"
+        ],
+        "postulate_vrb": [
+            "P",
+            "AA1",
+            "S",
+            "CH",
+            "AH0",
+            "L",
+            "EY2",
+            "T"
+        ]
+    },
+    "sow": {
+        "sow_nou": [
+            "S",
+            "AW1"
+        ],
+        "sow": [
+            "S",
+            "OW1"
+        ]
+    },
+    "tear": {
+        "tear_nou": [
+            "T",
+            "IH1",
+            "R"
+        ],
+        "tear_vrb": [
+            "T",
+            "EH1",
+            "R"
+        ]
+    },
+    "transform": {
+        "transform_nou": [
+            "T",
+            "R",
+            "AE1",
+            "N",
+            "S",
+            "F",
+            "AO0",
+            "R",
+            "M"
+        ],
+        "transform": [
+            "T",
+            "R",
+            "AE0",
+            "N",
+            "S",
+            "F",
+            "AO1",
+            "R",
+            "M"
+        ]
+    },
+    "wound": {
+        "wound_nou-vrb": [
+            "W",
+            "UW1",
+            "N",
+            "D"
+        ],
+        "wound_vrb": [
+            "W",
+            "AW1",
+            "N",
+            "D"
+        ]
+    }
+}

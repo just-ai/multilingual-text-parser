@@ -1,0 +1,141 @@
+
+# Install on Windows
+# 1. create conda envarment: "conda create -n py310.pc python=3.10"
+# 2. add MinGW PATH: "export PATH="$PATH:/c/Users/[username]/miniconda3/envs/py310.pc
+#                                       :/c/Users/[username]/miniconda3/envs/py310.pc/Scripts
+#                                       :/c/Users/[username]/miniconda3/envs/py310.pc/Library/bin"
+#    or https://stackoverflow.com/questions/45980107/extend-path-variable-in-git-bash-under-windows
+# 3. install pre-commit: "pip install pre-commit"
+# 4. init pre-commit: "pre-commit install"
+
+# Apply to all files without commiting:
+#   pre-commit run --all-files
+# Update this file:
+#   pre-commit autoupdate
+
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: check-ast
+        stages: [commit]
+    # предупреждает о сохранении файлов с UTF-8 BOM
+    -   id: check-byte-order-marker
+        stages: [commit]
+    -   id: check-case-conflict
+        stages: [commit]
+    -   id: check-docstring-first
+        stages: [commit]
+    -   id: check-executables-have-shebangs
+        stages: [commit]
+    -   id: check-json
+        stages: [commit]
+    -   id: check-yaml
+        stages: [commit]
+    -   id: debug-statements
+        stages: [commit]
+#    -   id: detect-aws-credentials
+#        stages: [commit]
+    # предотвращает сохранение приватных ключей
+    -   id: detect-private-key
+        stages: [commit]
+    # проверяет наличие переноса строки в конце всех текстовых файлов
+    -   id: end-of-file-fixer
+        stages: [commit]
+    -   id: trailing-whitespace
+        stages: [commit]
+    -   id: mixed-line-ending
+        stages: [commit]
+    # предупреждает о добавлении больших файлов в Git
+    -   id: check-added-large-files
+        stages: [commit]
+        args: [--maxkb=10000]
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.910-1
+    hooks:
+    -   id: mypy
+        stages: [commit]
+        additional_dependencies: [data-science-types==0.2.23, numpy==1.24.0]
+        exclude: \S*\/(main.py|train.py|eval.py|setup.py)
+        args: [--ignore-missing-imports, --install-types, --non-interactive, --python-version=3.8, --no-implicit-optional, --allow-redefinition, --show-error-codes, --warn-no-return]
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v2.7.2
+    hooks:
+    -   id: pyupgrade
+        stages: [commit]
+        args: [--py36-plus]
+-   repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+    -   id: black
+        stages: [commit]
+        args: [--config=./pyproject.toml]
+-   repo: https://github.com/asottile/blacken-docs
+    rev: v1.11.0
+    hooks:
+    -   id: blacken-docs
+        stages: [commit]
+        additional_dependencies: [black==21.10b0]
+        args: [--line-length=90]
+-   repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: ''  # Use the sha / tag you want to point at
+    hooks:
+    -   id: autopep8
+        stages: [commit]
+        args: [--in-place, --max-line-length=90, "--select=E3,E721,E731,E704"]
+-   repo: https://github.com/myint/docformatter
+    rev: v1.3.1
+    hooks:
+    -   id: docformatter
+        stages: [commit]
+        args: [--in-place, --wrap-summaries=90, --wrap-descriptions=85, --blank]
+-   repo: https://github.com/asottile/seed-isort-config
+    rev: v2.2.0
+    hooks:
+    -   id: seed-isort-config
+        stages: [commit]
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.4.2
+    hooks:
+    -   id: isort
+        stages: [commit]
+        name: isort (python)
+        args: [--profile=black, --line-length=90, --lines-between-types=1, --length-sort-straight, --filter-files]
+    -   id: isort
+        stages: [commit]
+        name: isort (cython)
+        types: [cython]
+    -   id: isort
+        stages: [commit]
+        name: isort (pyi)
+        types: [pyi]
+-   repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+    -   id: flake8
+        stages: [commit]
+        additional_dependencies: [flake8-docstrings]
+        types: [python]
+        args: [
+            "--select=C,E,F,W,B,B950",
+            "--ignore=E203,W503,FI10,FI11,FI12,FI13,FI14,FI15,FI16,FI17,FI58,PT013,E402,F401,F403,F405",
+            # black
+                # E203 whitespace before ':'
+                # W503 line break before binary operator
+            # flake8-future-import
+                # FI10 __future__ import "division" missing
+                # FI11 __future__ import "absolute_import" missing
+                # FI12 __future__ import "with_statement" missing
+                # FI13 __future__ import "print_function" missing
+                # FI14 __future__ import "unicode_literals" missing
+                # FI15 __future__ import "generator_stop" missing
+                # FI16 __future__ import "nested_scopes" missing
+                # FI17 __future__ import "generators" missing
+                # FI58 __future__ import "annotations" present
+            # flake8-pytest-style
+                # PT013 found incorrect import of pytest, use simple 'import pytest' instead
+            "--extend-ignore=E203,E501",
+            "--max-line-length=120",
+            "--per-file-ignores=tests/*.py:S101"
+            # S101 Use of assert detected
+        ]

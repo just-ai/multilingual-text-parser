@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+	<LangVersion>9.0</LangVersion>
+	<TargetFramework>net5.0</TargetFramework>
+	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+	<Platforms>AnyCPU;x64</Platforms>
+	<AssemblyName>pyCyriller</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AsyncIO" Version="0.1.69" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NetMQ, Version=4.0.1.6, Culture=neutral, PublicKeyToken=a6decef4ddc58b3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\NetMQ.4.0.1.6\lib\net47\NetMQ.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cyriller.Model\Cyriller.Model.csproj" />
+    <ProjectReference Include="..\Cyriller.Rule\Cyriller.Rule.csproj" />
+    <ProjectReference Include="..\Cyriller\Cyriller.csproj" />
+  </ItemGroup>
+
+</Project>

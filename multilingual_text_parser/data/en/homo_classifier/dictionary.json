@@ -1,0 +1,90 @@
+{
+    "axes": {
+        "classifier": "axes.bin",
+        "threshold": 0.3467247784137726,
+        "homographs": [
+            "axes_nou",
+            "axes_nou-vrb"
+        ]
+    },
+    "bow": {
+        "classifier": "bow.bin",
+        "threshold": 0.5814165472984314,
+        "homographs": [
+            "bow_nou-knot",
+            "bow_nou-ship"
+        ]
+    },
+    "celtic": {
+        "classifier": "celtic.bin",
+        "threshold": 0.5911900401115417,
+        "homographs": [
+            "celtic",
+            "celtic_adj-nou-sports"
+        ]
+    },
+    "lead": {
+        "classifier": "lead.bin",
+        "threshold": 0.546531617641449,
+        "homographs": [
+            "lead_nou",
+            "lead_nou-vrb"
+        ]
+    },
+    "live": {
+        "classifier": "live.bin",
+        "threshold": 0.8608980774879456,
+        "homographs": [
+            "live_adj",
+            "live_vrb"
+        ]
+    },
+    "lives": {
+        "classifier": "lives.bin",
+        "threshold": 0.6231736540794373,
+        "homographs": [
+            "lives_nou",
+            "lives_vrb"
+        ]
+    },
+    "postulate": {
+        "classifier": "postulate.bin",
+        "threshold": 0.9489254355430603,
+        "homographs": [
+            "postulate_nou",
+            "postulate_vrb"
+        ]
+    },
+    "sow": {
+        "classifier": "sow.bin",
+        "threshold": 0.14157192409038544,
+        "homographs": [
+            "sow",
+            "sow_nou"
+        ]
+    },
+    "tear": {
+        "classifier": "tear.bin",
+        "threshold": 0.4016796946525574,
+        "homographs": [
+            "tear_nou",
+            "tear_vrb"
+        ]
+    },
+    "transform": {
+        "classifier": "transform.bin",
+        "threshold": 0.9566270709037781,
+        "homographs": [
+            "transform",
+            "transform_nou"
+        ]
+    },
+    "wound": {
+        "classifier": "wound.bin",
+        "threshold": 0.12884977459907532,
+        "homographs": [
+            "wound_nou-vrb",
+            "wound_vrb"
+        ]
+    }
+}

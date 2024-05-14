@@ -1,0 +1,4 @@
+N = north
+S = south
+E = east
+W = west
