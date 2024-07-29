@@ -442,7 +442,10 @@ if __name__ == "__main__":
         print([i for i in s.get_attr("text")])
         print("----")
         if _lang == "RU":
-            s.syntax.print()
+            try:
+                s.syntax.print()
+            except:
+                pass
     print("*" * 10)
     print("doc.exception_messages", _doc.exceptions)
     print("*" * 10)

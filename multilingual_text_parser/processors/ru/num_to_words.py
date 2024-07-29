@@ -9,6 +9,7 @@ from subprocess import Popen
 
 from num2words import num2words
 
+from multilingual_text_parser.processors.ru.morph_analyzer import MorphAnalyzerRU
 from multilingual_text_parser.thirdparty.ru.e2yo.e2yo.core import E2Yo
 from multilingual_text_parser.utils.fs import get_root_dir
 from multilingual_text_parser.utils.log_utils import trace
@@ -20,11 +21,23 @@ LOGGER = logging.getLogger("root")
 
 
 class NumToWords:
-    def __init__(self, morph):
+    def __init__(self, morph=None):
         self._morph = morph
-        self._e2yo = E2Yo()
+        self._e2yo = None
+        self._cyriller_proc = None
+        self._cyriller_client = None
+        self._init = False
+
+    def _lazy_init(self):
+        if self._init:
+            return
 
         try:
+            if self._morph is None:
+                self._morph = MorphAnalyzerRU()
+
+            self._e2yo = E2Yo()
+
             free_port = int(env.setdefault("CyrillerPort", str(find_free_port())))
             cyriller_path = get_root_dir() / "data/ru/cyriller/pyCyriller"
             if sys.platform == "win32":
@@ -39,6 +52,9 @@ class NumToWords:
         except Exception as e:
             LOGGER.error(trace(self, e))
             self._cyriller_client = None
+
+        finally:
+            self._init = True
 
     def __del__(self):
         if self._cyriller_client:
@@ -78,6 +94,8 @@ class NumToWords:
         ordinal: bool = False,
         noun: tp.Optional[str] = None,
     ):
+        self._lazy_init()
+
         prefix, digit, suffix = self._prepare(digit)
         digit_th = None
 
@@ -207,3 +225,14 @@ class NumToWords:
         elif "весьм" in response:
             response = response.replace("весьм", "восьм")
         return response
+
+
+if __name__ == "__main__":
+    from speechflow.utils.profiler import Profiler
+
+    with Profiler(format=Profiler.format.ms):
+        n2w = NumToWords()
+
+    for i in range(15):
+        with Profiler(format=Profiler.format.ms):
+            print(n2w.transform(10**i))
