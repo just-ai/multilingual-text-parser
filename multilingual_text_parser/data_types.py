@@ -134,6 +134,10 @@ class Token(DocToken):
         return "<SIL>" in self.text
 
     @property
+    def is_service(self) -> bool:
+        return self.text.startswith("<") and self.text.endswith(">")
+
+    @property
     def is_word(self) -> bool:
         return (not (self.is_punctuation or self.is_pause)) and self.text != ""
 
