@@ -34,7 +34,7 @@ data = [path.relative_to("multilingual_text_parser").as_posix() for path in flis
 # This call to setup() does all the work
 setuptools.setup(
     name="multilingual_text_parser",
-    version=about["__version__"] + "-compiled",
+    version=about["__version__"],
     description="Text normalizer and phonemizer for TTS systems",
     long_description=README,
     packages=setuptools.find_packages(),
