@@ -2,7 +2,7 @@ import logging
 
 import regex as re
 
-from multilingual_text_parser import Text
+from multilingual_text_parser import Doc
 from multilingual_text_parser.data_types import Sentence
 from multilingual_text_parser.processors.common import Corrector
 
@@ -34,7 +34,7 @@ class CleanerRU:
         _str = Corrector.trim_punctuation(_str)
         return _str
 
-    def __call__(self, text: Text, **kwargs) -> Text:
+    def __call__(self, text: Doc, **kwargs) -> Doc:
         if text.sents is None:
             text.text = self._clear(text.text)
         else:
@@ -51,7 +51,7 @@ class CleanerRU:
         clear_text = self._clear(sent.text)
         if clear_text != sent.text:
             if not self._skip_invalid_sents:
-                temp = Text(clear_text, sentenize=True, tokenize=True).sents
+                temp = Doc(clear_text, sentenize=True, tokenize=True).sents
 
                 if len(temp) == 1:
                     # temp[0].orig = sent.orig
@@ -85,5 +85,5 @@ if __name__ == "__main__":
 
     cleaner = CleanerRU()
 
-    text = Text("- - .12 стульев # just-ai@рф - ? - ")
+    text = Doc("- - .12 стульев # just-ai@рф - ? - ")
     print(cleaner(text).text)
