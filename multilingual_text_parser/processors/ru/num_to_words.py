@@ -47,14 +47,21 @@ class NumToWords:
                 pass
 
             self._cyriller_proc = Popen([cyriller_path.as_posix(), str(free_port)])
+
+            try:
+                self._cyriller_proc.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                pass
+
+            if self._cyriller_proc.returncode:
+                raise RuntimeError("Please install .NET 5.0! (see README.md)")
+
             self._cyriller_client = ZMQPatterns.client(f"127.0.0.1:{free_port}")
 
+            self._init = True
         except Exception as e:
             LOGGER.error(trace(self, e))
-            self._cyriller_client = None
-
-        finally:
-            self._init = True
+            raise e
 
     def __del__(self):
         if self._cyriller_client:
@@ -151,7 +158,7 @@ class NumToWords:
         response = None
 
         if self._cyriller_client:
-            response = self._cyriller_client.request_as_string(request)
+            response = self._cyriller_client.request_as_string(request, timeout=5000)
 
         if response is None or response == "error":
             try:
@@ -228,7 +235,7 @@ class NumToWords:
 
 
 if __name__ == "__main__":
-    from speechflow.utils.profiler import Profiler
+    from multilingual_text_parser.utils.profiler import Profiler
 
     with Profiler(format=Profiler.format.ms):
         n2w = NumToWords()

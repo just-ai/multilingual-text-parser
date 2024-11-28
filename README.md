@@ -2,6 +2,30 @@
 
 ### Multilingual frontend for TTS systems
 
+## Installation:
+
+1. Install .NET 5.0
+
+```bash
+wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+apt-get install -y apt-transport-https && apt-get update
+apt-get install -y dotnet-sdk-5.0
+apt-get install -y aspnetcore-runtime-5.0
+apt-get install -y dotnet-runtime-5.0
+apt-get install -y nuget
+```
+
+2. Install python packages 
+
+```bash
+pip install -r requirements.txt
+```
+
+## Language support:
+
 | Features                            | Landuages                                                                                                                          |
 |-------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | sentence splitting and tokenization | [RU](https://github.com/natasha/razdel) and other                                                                                  |
@@ -13,7 +37,7 @@
 | phonemization                       | [RU](https://github.com/nsu-ai/russian_g2p), [EN](https://www.github.com/kyubyong/g2p) and [other](https://espeak.sourceforge.net) |
 | SSML support                        | RU, EN                                                                                                                             |
 
-Examples:
+## Examples:
 
 ```python
 utterance_ru = """
