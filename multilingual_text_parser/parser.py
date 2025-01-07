@@ -269,15 +269,19 @@ class TextParser:
             return self._sort(PHONEMES_IPA)
 
     @property
-    def phonemes(self):
+    def phonemes(self) -> tp.Tuple[str, ...]:
         return self._phonemes()
 
     @property
-    def num_symbols_per_phoneme(self) -> int:
-        return 3 if self.is_complex_phonemes else 1
+    def ipa_phonemes(self) -> tp.Tuple[str, ...]:
+        return self._sort(PHONEMES_IPA)
 
     @property
-    def is_complex_phonemes(self) -> bool:
+    def num_symbols_per_phoneme(self) -> int:
+        return 3 if self.is_ipa_phonemes else 1
+
+    @property
+    def is_ipa_phonemes(self) -> bool:
         if self._lang in ["RU", "EN"]:
             return False
         else:
