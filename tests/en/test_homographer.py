@@ -1,6 +1,6 @@
 import pytest
 
-from multilingual_text_parser import (
+from multilingual_text_parser.processors import (
     Corrector,
     HomographerEN,
     NormalizerEN,

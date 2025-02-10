@@ -1,17 +1,13 @@
-import re
 import enum
-import uuid
-import typing as tp
 import itertools
-
+import re
+import typing as tp
+import uuid
 from copy import deepcopy
-from string import punctuation
 
-from natasha import Doc as NatashaDoc
-from natasha import Segmenter
+from natasha.doc import Doc as NatashaDoc
 from natasha.doc import DocSent, DocToken
-
-import multilingual_text_parser
+from natasha import Segmenter
 
 from multilingual_text_parser._constants import (
     PUNCTUATION,
@@ -353,6 +349,8 @@ class Syntagma:
 
 class Sentence(DocSent):
     def __init__(self, sent: DocSent = None, tokenize=True):
+        from multilingual_text_parser._version import __version__
+
         self.text_orig: str = ""
         self.position: Position = Position.internal
         self.lang = None
@@ -372,7 +370,7 @@ class Sentence(DocSent):
 
         self.meta: tp.Dict[str, tp.Any] = {}
 
-        self.parser_version: str = multilingual_text_parser.__version__
+        self.parser_version: str = __version__
 
         if sent is not None:
             self.text_orig = self._remove_space.sub(r"\1", sent.text)
@@ -558,7 +556,7 @@ class Doc(NatashaDoc):
 
     @staticmethod
     def text_from_sentence(sents: tp.List[Sentence]) -> "Text":
-        _text = Text("", add_trailing_punct_token=False)
+        _text = Doc("", add_trailing_punct_token=False)
         _text._sents = sents
         _text._text = _text.text
         _text.text_orig = _text._text
@@ -570,7 +568,7 @@ class Doc(NatashaDoc):
     def __eq__(self, other):
         if isinstance(other, str):
             return self.text == other
-        elif isinstance(other, Text):
+        elif isinstance(other, Doc):
             return self.text == other.text
         else:
             return ValueError
@@ -657,5 +655,5 @@ if __name__ == "__main__":
     И вот появился на сцене Джеймс Кэмерон с,Титаником,- фильмом, который изменил всю киноиндустрию!
     """
 
-    text = Text(utterance, sentenize=True, tokenize=True)
+    text = Doc(utterance, sentenize=True, tokenize=True)
     print(TokenUtils.get_text_from_tokens(text.tokens))

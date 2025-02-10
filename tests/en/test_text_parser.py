@@ -1,6 +1,7 @@
 import pytest
 
-from multilingual_text_parser import Doc, TextParser, TokenUtils
+from multilingual_text_parser.data_types import Doc, TokenUtils
+from multilingual_text_parser.parser import TextParser
 
 parser = TextParser(lang="EN")
 

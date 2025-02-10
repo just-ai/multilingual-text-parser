@@ -1,6 +1,7 @@
 import logging
 
-from multilingual_text_parser import Doc, TextParser
+from multilingual_text_parser.data_types import Doc
+from multilingual_text_parser.parser import TextParser
 from multilingual_text_parser.utils.profiler import Profiler
 
 LOGGER = logging.getLogger("root")

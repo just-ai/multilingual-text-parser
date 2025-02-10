@@ -2,7 +2,7 @@ import logging
 
 import regex as re
 
-from multilingual_text_parser import Doc
+from multilingual_text_parser.data_types import Doc
 from multilingual_text_parser.data_types import Sentence
 from multilingual_text_parser.processors.common import Corrector
 

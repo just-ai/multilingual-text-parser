@@ -231,7 +231,7 @@ class TextParser:
                 if last_processor_name in msg:
                     raise RuntimeError(f"Exception {msg} in the last processor.")
         else:
-            raise EmptyTextError
+            raise EmptyTextError("|".join(doc.exceptions))
 
         for sent in doc.sents:
             sent.lang = self._lang
