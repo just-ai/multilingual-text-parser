@@ -4,9 +4,8 @@
 
 ## Installation:
 
-1. Install .NET 5.0
-
 ```bash
+# install dotnet
 wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
@@ -16,11 +15,11 @@ apt-get install -y dotnet-sdk-5.0
 apt-get install -y aspnetcore-runtime-5.0
 apt-get install -y dotnet-runtime-5.0
 apt-get install -y nuget
-```
 
-2. Install python packages 
+# install eSpeak
+apt-get install -y espeak-ng
 
-```bash
+# install python packages 
 pip install -r requirements.txt
 ```
 
