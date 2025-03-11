@@ -95,7 +95,9 @@ class Token(DocToken):
 
     @property
     def is_punctuation(self) -> bool:
-        if self.norm is not None:
+        if self.text in PUNCTUATION_ALL:
+            return True
+        elif self.norm is not None:
             return self.text != "" and len(self.norm) == 0
         else:
             return False
