@@ -199,9 +199,11 @@ class TextParser:
                 self._apply_text_restore = True
 
     def __call__(self, utterance: str) -> str:
+        if not isinstance(utterance, str):
+            raise ValueError("The input variable must be of type string.")
         return self.process(
             Doc(utterance), disable_translit=True, disable_phonemizer=True
-        ).text_with_capitalize
+        ).capitalize
 
     def process(self, doc: Doc, **kwargs) -> Doc:
         doc = deepcopy(doc)

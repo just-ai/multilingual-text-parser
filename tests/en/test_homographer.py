@@ -1,5 +1,6 @@
 import pytest
 
+from multilingual_text_parser.data_types import Doc
 from multilingual_text_parser.processors import (
     Corrector,
     HomographerEN,
@@ -12,7 +13,6 @@ from multilingual_text_parser.processors import (
     TextModifier,
     Tokenizer,
 )
-from multilingual_text_parser.data_types import Doc
 
 symb_mode = SymbolsModifier()
 text_mode = TextModifier()

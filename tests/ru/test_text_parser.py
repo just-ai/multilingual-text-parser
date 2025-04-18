@@ -1,12 +1,8 @@
 import pytest
 
-from multilingual_text_parser.processors import (
-    Corrector,
-    TextModifier,
-    TextModifierRU,
-)
 from multilingual_text_parser.data_types import Doc, TokenUtils
 from multilingual_text_parser.parser import TextParser
+from multilingual_text_parser.processors import Corrector, TextModifier, TextModifierRU
 
 text_modifier = TextModifier()
 text_modifier_ru = TextModifierRU()

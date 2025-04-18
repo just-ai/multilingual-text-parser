@@ -241,6 +241,16 @@ class DateRulesTag(BaseRule):
                             if self._triger_words_reduction[tokens[idx + 1].text] == "ед"
                             else "годах"
                         )
+
+                if (
+                    num_case == "им"
+                    and num_num == "ед"
+                    and idx + 1 < len(tokens)
+                    and tokens[idx + 1].text.startswith("год")
+                ):
+                    num_case = self._morph.get_case(tokens[idx + 1].text)
+                    num_num = self._morph.get_number(tokens[idx + 1].text)
+
                 res = []
                 for year in years:
                     r = self._num2words.transform(

@@ -1,8 +1,7 @@
 import pytest
 
-from multilingual_text_parser.parser import TextParser
-
 from multilingual_text_parser.data_types import Doc
+from multilingual_text_parser.parser import TextParser
 
 text_parser = TextParser(lang="PT-BR")
 

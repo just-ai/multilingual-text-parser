@@ -1,13 +1,14 @@
-import enum
-import itertools
 import re
-import typing as tp
+import enum
 import uuid
+import typing as tp
+import itertools
+
 from copy import deepcopy
 
+from natasha import Segmenter
 from natasha.doc import Doc as NatashaDoc
 from natasha.doc import DocSent, DocToken
-from natasha import Segmenter
 
 from multilingual_text_parser._constants import (
     PUNCTUATION,

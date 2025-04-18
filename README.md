@@ -19,7 +19,7 @@ apt-get install -y nuget
 # install eSpeak
 apt-get install -y espeak-ng
 
-# install python packages 
+# install python packages
 pip install -r requirements.txt
 ```
 
