@@ -201,7 +201,7 @@ class TextParser:
     def __call__(self, utterance: str) -> str:
         return self.process(
             Doc(utterance), disable_translit=True, disable_phonemizer=True
-        ).text_with_capitalize
+        ).capitalize
 
     def process(self, doc: Doc, **kwargs) -> Doc:
         doc = deepcopy(doc)
