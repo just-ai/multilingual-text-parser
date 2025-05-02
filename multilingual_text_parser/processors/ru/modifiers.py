@@ -121,6 +121,7 @@ class SentencesModifierRU(BaseSentenceProcessor):
                     .replace("+", TextModifier.custom_stress)
                 )
                 vocab[f" {key.lower()} "] = f" {value} "
+                vocab[f" {key.lower().replace(' ', '  ')} "] = f" {value} "
 
         self._names_vocab = Utils.read_vocab(vocabs_dir / "names.txt")
 
@@ -181,11 +182,11 @@ class SentencesModifierRU(BaseSentenceProcessor):
         _str = _str.lower().replace(" ", "  ")
 
         for vocab in [
+            self._interpret_as_vocab,
             self._preposition_vocab,
             self._abbreviation_with_hyphens_vocab,
             self._abbreviation_stress_vocab_lower,
             self._en_translit_vocab,
-            self._interpret_as_vocab,
         ]:
             if kwargs.get("disable_translit", False):
                 if vocab == self._en_translit_vocab:
