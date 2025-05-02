@@ -31,7 +31,6 @@ class AccentorRU(BaseSentenceProcessor):
         self,
         vocab_only: bool = False,
         vocab_path: tp.Optional[Path] = None,
-        with_homographs: bool = False,
         skip_obvious: bool = False,
     ):
         import dawg
@@ -39,10 +38,9 @@ class AccentorRU(BaseSentenceProcessor):
         self._morph = MorphAnalyzerRU()
         self._stress_rnn = StressRNN()
         self._vocab_only = vocab_only
-        self._with_homographs = with_homographs
         self._skip_obvious = skip_obvious
 
-        vocab_path = vocab_path or "data/ru/accentor"
+        vocab_path = vocab_path or "data/ru/accentor_homographs"
         dict_root = get_root_dir() / vocab_path
         dict_path = list(dict_root.glob("*.dawg"))
 
@@ -56,14 +54,6 @@ class AccentorRU(BaseSentenceProcessor):
             except OSError:
                 with path.open("rb") as f:
                     self._stress_vocab[pos_tag] = dawg_record.read(f)
-
-        self._label_auto_stress = False
-        if self._with_homographs:
-            self._label_auto_stress = True
-            self._stress_vocab = _create_homographs_vocab(self._stress_vocab)
-            print(
-                f"Homographs count {len({k: v for k, v in self._stress_vocab.items() if len(v) > 2})}"
-            )
 
         vocabs_dir = get_root_dir() / "data/ru/vocabularies"
         vocab_path = vocabs_dir / "custom_stress.txt"
@@ -80,27 +70,17 @@ class AccentorRU(BaseSentenceProcessor):
     def _stress_selection(
         self,
         word: str,
-        stress_pos: tp.Tuple[int],
+        stress_pos: tp.Tuple[int, ...],
         pos_tag: str,
         grammemes: tp.Dict[str, str],
-        vocab_pos_tag: str,
-        question_mark: bool,
-        all_pos: bool,
     ) -> tp.Tuple[int, ...]:
         stress_pos = tuple(x for x in stress_pos if x > 0)
 
-        if grammemes is None:
-            grammemes = {}
-
-        if (
-            not all_pos
-            and vocab_pos_tag in self.feat_dict
-            and word in self.feat_dict[vocab_pos_tag]
-        ):
+        if pos_tag in self.feat_dict and word in self.feat_dict[pos_tag]:
             f1 = {grammemes[g] for g in grammemes}
             m_inter = 0
             s = 0
-            all_forms = self.feat_dict[vocab_pos_tag][word]
+            all_forms = self.feat_dict[pos_tag][word]
             for f in all_forms:
                 f_set = set(f.split("|"))
                 if f_set == f1:
@@ -109,35 +89,17 @@ class AccentorRU(BaseSentenceProcessor):
                 elif len(f_set.intersection(f1)) > m_inter:
                     m_inter = len(f_set.intersection(f1))
                     s = all_forms[f]
-            return (s,)
 
-        if all_pos or len(stress_pos) == 1:
-            return stress_pos
+            if s and len(all_forms) > 1:
+                return (s,)
 
-        if vocab_pos_tag == "NOUN":
-            if "-" in word and len(stress_pos) == 2:
-                return stress_pos
-            else:
-                if grammemes.get("Number", "Sing") == "Sing":
-                    return (min(stress_pos),)
-                else:
-                    return (max(stress_pos),)
-
-        if vocab_pos_tag == "VERB" and pos_tag in ["NOUN", "VERB", "ADJ"]:
-            if question_mark:
-                return (min(stress_pos),)
-            if pos_tag == "ADJ":
-                return (min(stress_pos),)
-
-        return (max(stress_pos),)
+        return stress_pos
 
     def get_stress_from_vocab(
         self,
         word: str,
-        pos_tag: str = None,  # type: ignore
-        grammemes: tp.Dict[str, str] = None,  # type: ignore
-        question_mark: bool = False,
-        all_pos: bool = False,
+        pos_tag: tp.Optional[str] = None,
+        grammemes: tp.Optional[tp.Dict[str, str]] = None,
     ) -> tp.Optional[tp.Tuple[int, ...]]:
         if len(word) == 1:
             return None
@@ -150,6 +112,9 @@ class AccentorRU(BaseSentenceProcessor):
         if pos_tag is None:
             pos_tag = self._morph.get_pos(word)
 
+        if grammemes is None:
+            grammemes = {}
+
         if pos_tag in self._morph.cyr_pos_tags:
             pos_tag = self._morph.lat_pos_tags[self._morph.cyr_pos_tags.index(pos_tag)]
 
@@ -158,46 +123,29 @@ class AccentorRU(BaseSentenceProcessor):
         if pos_tag == "DET":
             pos_tag = "PRON"
 
-        if self._with_homographs:
-            _vocab = self._stress_vocab
-        elif pos_tag and pos_tag in self._stress_vocab:
+        if pos_tag and pos_tag in self._stress_vocab:
             _vocab = self._stress_vocab[pos_tag]
         else:
             _vocab = None  # type: ignore
 
         if _vocab:
             if word in _vocab:
-                stress_pos = _vocab[word]
-                all_stress_pos = []
-                for pos in stress_pos:
-                    # filter padding artefacts from dawg saving
-                    if pos == 0:
-                        continue
-                    pos = (pos,) if isinstance(pos, int) else pos
-                    all_stress_pos.append(
-                        self._stress_selection(
-                            word,
-                            pos,
-                            pos_tag,
-                            grammemes,
-                            pos_tag,
-                            question_mark,
-                            all_pos,
-                        )[0]
-                    )
-                return tuple(all_stress_pos)
+                stress_pos = _vocab[word][0]
+                return self._stress_selection(
+                    word,
+                    stress_pos,
+                    pos_tag,
+                    grammemes,
+                )
             else:
-                for vocab_pos, stress_vocab in self._stress_vocab.items():
-                    if vocab_pos != pos_tag and word in stress_vocab:
-                        stress_pos = stress_vocab[word][0]
+                for _vocab_pos, _vocab in self._stress_vocab.items():
+                    if _vocab_pos != pos_tag and word in _vocab:
+                        stress_pos = _vocab[word][0]
                         return self._stress_selection(
                             word,
                             stress_pos,
                             pos_tag,
                             grammemes,
-                            vocab_pos,
-                            question_mark,
-                            all_pos,
                         )
 
         if self._vocab_only:
@@ -208,7 +156,7 @@ class AccentorRU(BaseSentenceProcessor):
     def get_stress_from_rnn(
         self,
         word: str,
-    ):
+    ) -> tp.Optional[tp.Tuple[int, ...]]:
         if len(word) == 1:
             return
 
@@ -220,20 +168,20 @@ class AccentorRU(BaseSentenceProcessor):
                     accuracy_threshold=threshold,
                     replace_similar_symbols=True,
                 )
+
                 if "+" in stressed_text:
                     stress_poss: tp.List = []
                     for i, letter in enumerate(stressed_text):
                         if letter == "+":
                             stress_poss.append(i - len(stress_poss))
                     return tuple(stress_poss)
+
             except Exception:
-                return []
+                return
 
     @exception_handler
     def _process_sentence(self, sent: Sentence, **kwargs):
-        question_mark = "?" in sent.text
         for token in sent.tokens:
-            auto_stress = False
             if not token.is_punctuation and not token.is_number:
                 if token.stress and "+" in token.stress:
                     continue
@@ -242,47 +190,30 @@ class AccentorRU(BaseSentenceProcessor):
                     word=token.text,
                     pos_tag=token.pos,
                     grammemes=token.feats,
-                    question_mark=question_mark,
                 )
-                if stress_poss is None:
-                    stress_poss = self.get_stress_from_rnn(
+                if stress_poss is None or len(stress_poss) > 1:
+                    auto_stress = self.get_stress_from_rnn(
                         word=token.text,
                     )
-                    if self._label_auto_stress and stress_poss:
-                        auto_stress = True
+
+                    if auto_stress is not None and stress_poss is not None:
+                        if not set(auto_stress).issubset(set(stress_poss)):
+                            if token.feats.get("Number", "Sing") == "Sing":
+                                auto_stress = (min(stress_poss),)
+                            else:
+                                auto_stress = (max(stress_poss),)
+
+                    stress_poss = auto_stress
 
                 if stress_poss:
-                    if not self._with_homographs:
-                        token_stress = token.text
-                        increment = 0
-                        for pos in stress_poss:
-                            pos += increment
-                            token_stress = token_stress[:pos] + "+" + token_stress[pos:]
-                            increment += 1
-                        token.stress = token_stress
-                    else:
-                        all_token_stress = []
+                    token_stress = token.text
+                    increment = 0
+                    for pos in stress_poss:
+                        pos += increment
+                        token_stress = token_stress[:pos] + "+" + token_stress[pos:]
+                        increment += 1
 
-                        for pos in stress_poss:
-                            token_text = (
-                                token.text_orig if token.text_orig else token.text
-                            )
-                            if (
-                                not self._skip_obvious
-                                or token.is_name
-                                or (
-                                    self._skip_obvious
-                                    and (len(stress_poss) > 1 or auto_stress)
-                                )
-                            ):
-                                token_stress = token_text[:pos] + "+" + token_text[pos:]
-                            else:
-                                token_stress = token_text
-
-                            all_token_stress.append(token_stress)
-                            if auto_stress:
-                                all_token_stress.append("{auto stress}")
-                            token.stress = all_token_stress
+                    token.stress = token_stress
 
 
 if __name__ == "__main__":

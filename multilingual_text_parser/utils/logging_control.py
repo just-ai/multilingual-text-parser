@@ -50,7 +50,7 @@ def create_logger(
 ):
     root_logger = logging.getLogger(log_name)
 
-    # create loggere
+    # create logger
     formatter = _get_formatter()
     root_logger.setLevel(file_level)
     root_logger.handlers.clear()
