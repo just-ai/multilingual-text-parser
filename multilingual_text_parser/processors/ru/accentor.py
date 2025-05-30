@@ -40,6 +40,9 @@ class AccentorRU(BaseSentenceProcessor):
         self._vocab_only = vocab_only
         self._skip_obvious = skip_obvious
 
+        # RU vowels:
+        self.vowels = ["а", "о", "и", "е", "ё", "ы", "у", "э", "ю", "я"]
+
         vocab_path = vocab_path or "data/ru/accentor_homographs"
         dict_root = get_root_dir() / vocab_path
         dict_path = list(dict_root.glob("*.dawg"))
@@ -184,6 +187,11 @@ class AccentorRU(BaseSentenceProcessor):
         for token in sent.tokens:
             if not token.is_punctuation and not token.is_number:
                 if token.stress and "+" in token.stress:
+                    s = token.stress
+                    pos = s.find("+")
+                    if s[-1] != "+" and s[pos + 1].lower() in self.vowels:
+                        token.stress = s[:pos] + s[pos + 1] + "+" + s[pos + 2:]
+
                     continue
 
                 stress_poss = self.get_stress_from_vocab(
